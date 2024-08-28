@@ -838,12 +838,15 @@ void IOKitJoystick::GatherElementsHandler(const void* value, void* parameter)
 		if (kHIDPage_GenericDesktop == usagePage)
 		{
 			const long usage = GetElementValue(element, CFSTR(kIOHIDElementUsageKey));
+		if (kHIDPage_GenericDesktop == usagePage || kHIDPage_Simulation == usagePage)  //usagePage == 9 || 2
+		{
 
-			if (   kHIDUsage_GD_Slider == usage
+			if (   kHIDUsage_GD_Slider == usage || kHIDUsage_Sim_Accelerator == usage || kHIDUsage_Sim_Brake == usage 
 				|| kHIDUsage_GD_X      == usage || kHIDUsage_GD_Y  == usage || kHIDUsage_GD_Z  == usage
 				|| kHIDUsage_GD_Rx     == usage || kHIDUsage_GD_Ry == usage || kHIDUsage_GD_Rz == usage)
 			{
-				thisPtr->AddAxis(element);
+				printf("adding this axis...\n");
+				thisPtr->AddAxis(element); // this looks right...
 			}
 			else if (kHIDUsage_GD_Hatswitch == usage && thisPtr->m_POVs.Size() < 4)
 			{
